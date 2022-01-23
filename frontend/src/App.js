@@ -1,19 +1,20 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 
-import UsersList from "./components/users/UsersList";
+import UsersList from "./components/common/UsersList";
 import Home from "./components/common/Home";
-import Register from "./components/common/Register";
-import Register2 from "./components/common/Register2";
-import Login from "./components/common/Login";
-import Login2 from "./components/common/Login2";
-import Navbar from "./components/templates/Navbar";
-import BuyerNavbar from "./components/templates/BuyerNavbar";
-import VendorNavbar from "./components/templates/VendorNavbar";
-import BuyerUI from "./components/common/BuyerUI";
-import VendorUI from "./components/common/VendorUI";
-import Profile from "./components/users/Profile";
-import ProfileVendors from "./components/users/ProfileVendors";
+import Register from "./components/Buyer/Register";
+import Register2 from "./components/Vendor/Register2";
+import RegisterFood from "./components/Vendor/RegisterFood";
+import Login from "./components/Buyer/Login";
+import Login2 from "./components/Vendor/Login2";
+import Navbar from "./components/common/Navbar";
+import BuyerNavbar from "./components/Buyer/BuyerNavbar";
+import VendorNavbar from "./components/Vendor/VendorNavbar";
+import BuyerUI from "./components/Buyer/BuyerUI";
+import VendorUI from "./components/Vendor/VendorUI";
+import Profile from "./components/Buyer/Profile";
+import ProfileVendors from "./components/Vendor/ProfileVendors";
 
 const Layout = () => {
   return (
@@ -67,6 +68,7 @@ function App() {
         <Route path="/" element={<Layout3 />}>
           <Route path="ProfileVendors" element={<ProfileVendors />} />
           <Route path="VendorUI" element={<VendorUI />} />
+          <Route path="RegisterFood" element={<RegisterFood/>} />
         </Route>
       </Routes>
     </BrowserRouter>

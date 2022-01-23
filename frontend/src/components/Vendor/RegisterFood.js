@@ -3,6 +3,7 @@ import axios from "axios";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Switch from "@mui/material/Switch";
 
 const RegisterFood = (props) => {
   const [name, setName] = useState("");
@@ -10,7 +11,7 @@ const RegisterFood = (props) => {
   const [shop, setShop] = useState("");
   const [price, setPrice] = useState("");
   const [rating, setRating] = useState("");
-  const [nonveg, setNonveg] = useState("");
+  const [nonveg, setNonveg] = useState(false);
   const [tags, setTags] = useState(null);
 
   const onChangeUsername = (event) => {
@@ -30,7 +31,7 @@ const RegisterFood = (props) => {
   };
 
   const onChangeNonveg = (event) => {
-    setNonveg(event.target.true);
+    setNonveg(event.target.value);
   };
 
   const onChangeShop = (event) => {
@@ -74,7 +75,7 @@ const RegisterFood = (props) => {
     <Grid container align={"center"} spacing={2}>
       <Grid item xs={12}>
         <TextField
-          label="Name"
+          label="Item Name"
           variant="outlined"
           value={name}
           onChange={onChangeUsername}
@@ -89,8 +90,8 @@ const RegisterFood = (props) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Switch defaultChecked
-          label="Nonveg"
+        Nonveg
+        <Switch
           variant="outlined"
           value={nonveg}
           onChange={onChangeNonveg}

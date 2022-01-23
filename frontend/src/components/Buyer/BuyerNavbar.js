@@ -29,12 +29,12 @@ const Navbar = () => {
             variant="h6"
             component="div"
             sx={{ cursor: "pointer" }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/BuyerUI")}
           >
-            Canteen Portal
+            Buyer Portal
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit" onClick={() => navigate("/")}>
+          <Button color="inherit" onClick={() => navigate("/BuyerUI")}>
            My Wallet
           </Button>
           <Button color="inherit" onClick={() => navigate("/profile")}>

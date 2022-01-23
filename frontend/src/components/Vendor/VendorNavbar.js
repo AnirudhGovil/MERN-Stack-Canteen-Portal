@@ -29,13 +29,13 @@ const VendorNavbar = () => {
             variant="h6"
             component="div"
             sx={{ cursor: "pointer" }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/VendorUI")}
           >
-            Canteen Portal
+            Vendor Portal
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit" onClick={() => navigate("/")}>
-           My Wallet
+          <Button color="inherit" onClick={() => navigate("/RegisterFood")}>
+           Add Food Item
           </Button>
           <Button color="inherit" onClick={() => navigate("/profilevendors")}>
            My Profile
