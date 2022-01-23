@@ -32,14 +32,6 @@ const Profile = (props) => {
     setPassword(event.target.value);
   };
 
-  const resetInputs = () => {
-    setPassword("");
-    setName("");
-    setContactNumber("");
-    setAge("");
-    setBatch("");
-  };
-
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -50,17 +42,22 @@ const Profile = (props) => {
       contactNumber: contactNumber,
       age: age,
       batch: batch,
-      watch : localStorage.getItem('wallet')
+      wallet: localStorage.getItem('wallet')
     };
 
     axios
       .post("http://localhost:4000/user/userprofile", newUser)
       .then((response) => {
         alert("Success");
+        localStorage.setItem("password", response.data.password);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("contactNumber", response.data.contactNumber);
+        localStorage.setItem("age", response.data.age);
+        localStorage.setItem("batch", response.data.batch);
+        localStorage.setItem("wallet", response.data.wallet);
         console.log(response.data);
+        window.location = 'http://localhost:3000/profile';
       });
-
-    resetInputs();
   };
 
   return (

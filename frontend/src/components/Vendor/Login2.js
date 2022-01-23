@@ -40,6 +40,7 @@ const Login2 = (props) => {
         localStorage.setItem("contactNumber", response.data.contactNumber);
         localStorage.setItem("shop", response.data.shop);
         localStorage.setItem("timings", response.data.timings);
+        localStorage.setItem("orders", 0);
         alert("Login Successful");
         window.location = 'http://localhost:3000/VendorUI';
       });

@@ -7,14 +7,6 @@ const emailID = localStorage.getItem('currentUser');
 
 const ProfileVendors = (props) => {
 
-  axios
-    .get("http://localhost:4000/user/profilechange")
-    .then((response) => {
-      alert("Success");
-      console.log(response.data);
-    
-    });
-
   const [name, setName] = useState(localStorage.getItem('name'));
   const [password, setPassword] = useState(localStorage.getItem('password'));
   const [contactNumber, setContactNumber] = useState(localStorage.getItem('contactNumber'));
@@ -41,13 +33,6 @@ const ProfileVendors = (props) => {
     setPassword(event.target.value);
   };
 
-  const resetInputs = () => {
-    setPassword("");
-    setName("");
-    setContactNumber("");
-    setShop("");
-    setTimings("");
-  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -59,23 +44,28 @@ const ProfileVendors = (props) => {
       contactNumber: contactNumber,
       shop: shop,
       timings: timings,
+      orders: localStorage.getItem('orders')
     };
 
     axios
-      .post("http://localhost:4000/user/register2", newUser)
+      .post("http://localhost:4000/user/vendorprofile", newUser)
       .then((response) => {
         alert("Success");
+        localStorage.setItem("password", response.data.password);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("contactNumber", response.data.contactNumber);
+        localStorage.setItem("shop", response.data.shop);
+        localStorage.setItem("timings", response.data.timings);
         console.log(response.data);
+        window.location = 'http://localhost:3000/profilevendors';
       });
-
-    resetInputs();
   };
 
   return (
 
     <Grid container align={"center"} spacing={2}>
       <Grid item xs={12}>
-      {`${localStorage.getItem('email')}`}
+        {`${localStorage.getItem('email')}`}
       </Grid>
       <Grid item xs={12}>
         <TextField

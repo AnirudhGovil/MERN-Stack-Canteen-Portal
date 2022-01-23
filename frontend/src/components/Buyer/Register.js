@@ -11,7 +11,6 @@ const Register = (props) => {
   const [contactNumber, setContactNumber] = useState("");
   const [age, setAge] = useState("");
   const [batch, setBatch] = useState("");
-  const [wallet, setWallet] = useState(null);
 
   const onChangeUsername = (event) => {
     setName(event.target.value);
@@ -37,10 +36,6 @@ const Register = (props) => {
     setPassword(event.target.value);
   };
 
-  const onChangeWallet = (event) => {
-    setWallet(event.target.value);
-  };
-
   const resetInputs = () => {
     setEmail("");
     setPassword("");
@@ -48,7 +43,6 @@ const Register = (props) => {
     setContactNumber("");
     setAge("");
     setBatch("");
-    setWallet(0);
   };
 
   const onSubmit = (event) => {
@@ -61,7 +55,7 @@ const Register = (props) => {
       contactNumber: contactNumber,
       age: age,
       batch: batch,
-      wallet: 0,
+      wallet: Number('5'),
     };
 
     axios

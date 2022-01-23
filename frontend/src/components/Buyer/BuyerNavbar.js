@@ -34,7 +34,7 @@ const Navbar = () => {
             Buyer Portal
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit" onClick={() => navigate("/BuyerUI")}>
+          <Button color="inherit" onClick={() => navigate("/Wallet")}>
            My Wallet
           </Button>
           <Button color="inherit" onClick={() => navigate("/profile")}>

@@ -38,31 +38,59 @@ router.get("/getFoodItems", function (req, res) {
     })
 });
 
-/* router.get("/profile", (req, res) => {
+router.post("/wallet", (req, res) => {
+    const email = req.body.email;
     // Find user by email
-    User.findOne({ email: localStorage.getItem('currentUser') }, function (err, data) {
-        console.log(data);
-    });
-}); */
-router.post("/userprofile", (req, res) => {
-    const newUser = new User({
-        _id: req.body._id,
-        email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-        contactNumber: req.body.contactNumber,
-        age: req.body.age,
-        batch: req.body.batch,
-        wallet: req.body.wallet
-    });
-
-    newUser.save()
-        .then(user => {
+    User.findOne({ email }).then(user => {
+        // Check if user email exists
+        user.wallet = Number(user.wallet) + Number(req.body.wallet);
+        user.save().then(user => {
             res.status(200).json(user);
         })
         .catch(err => {
             res.status(400).send(err);
         });
+    })
+});
+
+router.post("/userprofile", (req, res) => {
+    const email = req.body.email;
+    // Find user by email
+    User.findOne({ email }).then(user => {
+        // Check if user email exists
+        user.name = req.body.name;
+        user.contactNumber = req.body.contactNumber;
+        user.age = req.body.age;
+        user.batch = req.body.batch;
+        user.password = req.body.password;
+        user.wallet = req.body.wallet;
+        user.save().then(user => {
+            res.status(200).json(user);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+});
+
+router.post("/vendorprofile", (req, res) => {
+    const email = req.body.email;
+    // Find user by email
+    Vendor.findOne({ email }).then(vendor => {
+        // Check if vendor email exists
+        vendor.name = req.body.name;
+        vendor.contactNumber = req.body.contactNumber;
+        vendor.shop = req.body.shop;
+        vendor.timings = req.body.timings;
+        vendor.password = req.body.password;
+        vendor.orders = req.body.orders;
+        vendor.save().then(vendor => {
+            res.status(200).json(vendor);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
 });
 
 
@@ -125,7 +153,8 @@ router.post("/login", (req, res) => {
                     'name': user.name,
                     'contactNumber': user.contactNumber,
                     'age': user.age,
-                    'batch': user.batch
+                    'batch': user.batch,
+                    'wallet':user.wallet
                 });
                 res.send({ message: "login sucess", user: user })
                 res.redirect('/')
@@ -171,12 +200,12 @@ router.post("/login2", (req, res) => {
 
 
 router.post("/registerFood", (req, res) => {
-    const newUser = new User({
+    const newUser = new FoodItems({
         email: req.body.email,
         name: req.body.name,
         shop: req.body.shop,
-        price: req.body.price,
-        rating: 0,
+        price: Number(req.body.price),
+        rating: Number(req.body.rating),
         nonveg: req.body.nonveg,
         tag: req.body.tag
     });

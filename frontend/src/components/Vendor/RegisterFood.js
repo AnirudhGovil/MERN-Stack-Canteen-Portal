@@ -7,43 +7,25 @@ import Switch from "@mui/material/Switch";
 
 const RegisterFood = (props) => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [shop, setShop] = useState("");
   const [price, setPrice] = useState("");
-  const [rating, setRating] = useState("");
   const [nonveg, setNonveg] = useState(false);
   const [tags, setTags] = useState(null);
 
-  const onChangeUsername = (event) => {
-    setName(event.target.value);
-  };
-
-  const onChangeEmail = (event) => {
-    setEmail(event.target.value);
+  const onChangeName = (event) => {
+    setPrice(event.target.value);
   };
 
   const onChangePrice = (event) => {
     setPrice(event.target.value);
   };
 
-  const onChangeRating = (event) => {
-    setRating(event.target.value);
-  };
-
   const onChangeNonveg = (event) => {
     setNonveg(event.target.value);
   };
 
-  const onChangeShop = (event) => {
-    setShop(event.target.value);
-  };
-
   const resetInputs = () => {
-    setEmail("");
-    setShop("");
     setName("");
     setPrice("");
-    setRating("");
     setNonveg("");
     setTags(null);
   };
@@ -51,18 +33,18 @@ const RegisterFood = (props) => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    const newUser = {
-      email: email,
-      shop: shop,
+    const newFood = {
+      email: localStorage.getItem('email'),
+      shop: localStorage.getItem('shop'),
       name: name,
-      price: price,
-      rating: rating,
+      price: Number(price),
+      rating: Number(0),
       nonveg: nonveg,
       tags: "",
     };
 
     axios
-      .post("http://localhost:4000/user/registerFood", newUser)
+      .post("http://localhost:4000/user/registerFood", newFood)
       .then((response) => {
         alert("Created\t" + response.data.name);
         console.log(response.data);
@@ -78,12 +60,12 @@ const RegisterFood = (props) => {
           label="Item Name"
           variant="outlined"
           value={name}
-          onChange={onChangeUsername}
+          onChange={onChangeName}
         />
       </Grid>
       <Grid item xs={12}>
         <TextField
-          label="Contact Number"
+          label="Item Price"
           variant="outlined"
           value={price}
           onChange={onChangePrice}
@@ -95,14 +77,6 @@ const RegisterFood = (props) => {
           variant="outlined"
           value={nonveg}
           onChange={onChangeNonveg}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          label="Shop"
-          variant="outlined"
-          value={shop}
-          onChange={onChangeShop}
         />
       </Grid>
       <Grid item xs={12}>

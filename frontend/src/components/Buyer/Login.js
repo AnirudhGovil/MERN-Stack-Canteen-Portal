@@ -40,6 +40,7 @@ const Login = (props) => {
         localStorage.setItem("contactNumber", response.data.contactNumber);
         localStorage.setItem("age", response.data.age);
         localStorage.setItem("batch", response.data.batch);
+        localStorage.setItem("wallet", response.data.wallet);
         alert("Login Successful");
         window.location = 'http://localhost:3000/BuyerUI';
       });

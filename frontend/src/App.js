@@ -15,6 +15,7 @@ import BuyerUI from "./components/Buyer/BuyerUI";
 import VendorUI from "./components/Vendor/VendorUI";
 import Profile from "./components/Buyer/Profile";
 import ProfileVendors from "./components/Vendor/ProfileVendors";
+import Wallet from "./components/Buyer/Wallet";
 
 const Layout = () => {
   return (
@@ -64,6 +65,7 @@ function App() {
         <Route path="/" element={<Layout2 />}>
           <Route path="Profile" element={<Profile />} />
           <Route path="BuyerUI" element={<BuyerUI />} />
+          <Route path="Wallet" element={<Wallet />} />
         </Route>
         <Route path="/" element={<Layout3 />}>
           <Route path="ProfileVendors" element={<ProfileVendors />} />
