@@ -44,22 +44,25 @@ router.get("/getFoodItems", function (req, res) {
         console.log(data);
     });
 }); */
-router.post("/profilechange", (req, res) => {
-    const { email, password } = req.body;
-    // Find user by email
-    User.findOne({ email: email }).then(user => {
-        // Check if user email exists
-        if (user) {
-
-            const token = user;
-            res.status(200).json({
-                token: token
-            });
-            res.send({ message: "profile sucess", user: user })
-            res.redirect('/')
-
-        }
+router.post("/userprofile", (req, res) => {
+    const newUser = new User({
+        _id: req.body._id,
+        email: req.body.email,
+        password: req.body.password,
+        name: req.body.name,
+        contactNumber: req.body.contactNumber,
+        age: req.body.age,
+        batch: req.body.batch,
+        wallet: req.body.wallet
     });
+
+    newUser.save()
+        .then(user => {
+            res.status(200).json(user);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
 });
 
 
@@ -116,23 +119,42 @@ router.post("/login", (req, res) => {
         // Check if user email exists
         if (user) {
             if (password === user.password) {
-                const token = user.email;
                 res.status(200).json({
-                    token: token
+                    'email': user.email,
+                    'password': user.password,
+                    'name': user.name,
+                    'contactNumber': user.contactNumber,
+                    'age': user.age,
+                    'batch': user.batch
                 });
                 res.send({ message: "login sucess", user: user })
                 res.redirect('/')
             }
         }
-    });
 
+
+        else {
+            return res.status(404).json({
+                error: "Email not found",
+            });
+        }
+    });
+});
+
+router.post("/login2", (req, res) => {
+    const { email, password } = req.body;
+    // Find user by email
     Vendor.findOne({ email: email }).then(vendor => {
         // Check if user email exists
         if (vendor) {
             if (password === vendor.password) {
-                const token = vendor.email;
                 res.status(200).json({
-                    token: token
+                    'email': vendor.email,
+                    'password': vendor.password,
+                    'name': vendor.name,
+                    'contactNumber': vendor.contactNumber,
+                    'shop': vendor.shop,
+                    'timings': vendor.timings
                 });
                 res.send({ message: "login sucess", vendor: vendor })
                 res.redirect('/')
@@ -146,6 +168,7 @@ router.post("/login", (req, res) => {
         }
     });
 });
+
 
 router.post("/registerFood", (req, res) => {
     const newUser = new User({

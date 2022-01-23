@@ -15,11 +15,11 @@ const ProfileVendors = (props) => {
     
     });
 
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [shop, setShop] = useState("");
-  const [timings, setTimings] = useState("");
+  const [name, setName] = useState(localStorage.getItem('name'));
+  const [password, setPassword] = useState(localStorage.getItem('password'));
+  const [contactNumber, setContactNumber] = useState(localStorage.getItem('contactNumber'));
+  const [shop, setShop] = useState(localStorage.getItem('shop'));
+  const [timings, setTimings] = useState(localStorage.getItem('timings'));
 
   const onChangeUsername = (event) => {
     setName(event.target.value);
@@ -53,7 +53,7 @@ const ProfileVendors = (props) => {
     event.preventDefault();
 
     const newUser = {
-      email: localStorage.getItem('currentUser'),
+      email: localStorage.getItem('email'),
       password: password,
       name: name,
       contactNumber: contactNumber,
@@ -75,13 +75,14 @@ const ProfileVendors = (props) => {
 
     <Grid container align={"center"} spacing={2}>
       <Grid item xs={12}>
-        {`${emailID}`}
+      {`${localStorage.getItem('email')}`}
       </Grid>
       <Grid item xs={12}>
         <TextField
           label="Name"
           variant="outlined"
           value={name}
+          //defaultValue= {`${localStorage.getItem('name')}`}
           onChange={onChangeUsername}
         />
       </Grid>
@@ -90,6 +91,7 @@ const ProfileVendors = (props) => {
           label="Contact Number"
           variant="outlined"
           value={contactNumber}
+          //defaultValue= {`${localStorage.getItem('contactNumber')}`}
           onChange={onChangeContactNumber}
         />
       </Grid>
@@ -98,14 +100,16 @@ const ProfileVendors = (props) => {
           label="Timings"
           variant="outlined"
           value={timings}
+          //defaultValue= {`${localStorage.getItem('timings')}`}
           onChange={onChangeTimings}
         />
       </Grid>
       <Grid item xs={12}>
         <TextField
-          label="Timings"
+          label="Shop"
           variant="outlined"
           value={shop}
+          //defaultValue= {`${localStorage.getItem('shop')}`}
           onChange={onChangeShop}
         />
       </Grid>
@@ -114,6 +118,7 @@ const ProfileVendors = (props) => {
           label="Password"
           variant="outlined"
           value={password}
+          //defaultValue= {`${localStorage.getItem('password')}`}
           onChange={onChangePassword}
         />
       </Grid>

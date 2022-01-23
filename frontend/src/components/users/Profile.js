@@ -3,23 +3,14 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState, useEffect } from "react";
-const emailID = localStorage.getItem('currentUser');
 
 const Profile = (props) => {
 
-  axios
-    .get("http://localhost:4000/user/profilechange")
-    .then((response) => {
-      alert("Success");
-      console.log(response.data);
-    
-    });
-
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [age, setAge] = useState("");
-  const [batch, setBatch] = useState("");
+  const [name, setName] = useState(localStorage.getItem('name'));
+  const [password, setPassword] = useState(localStorage.getItem('password'));
+  const [contactNumber, setContactNumber] = useState(localStorage.getItem('contactNumber'));
+  const [age, setAge] = useState(localStorage.getItem('age'));
+  const [batch, setBatch] = useState(localStorage.getItem('batch'));
 
   const onChangeUsername = (event) => {
     setName(event.target.value);
@@ -53,16 +44,17 @@ const Profile = (props) => {
     event.preventDefault();
 
     const newUser = {
-      email: localStorage.getItem('currentUser'),
+      email: localStorage.getItem('email'),
       password: password,
       name: name,
       contactNumber: contactNumber,
       age: age,
       batch: batch,
+      watch : localStorage.getItem('wallet')
     };
 
     axios
-      .post("http://localhost:4000/user/register", newUser)
+      .post("http://localhost:4000/user/userprofile", newUser)
       .then((response) => {
         alert("Success");
         console.log(response.data);
@@ -75,12 +67,13 @@ const Profile = (props) => {
 
     <Grid container align={"center"} spacing={2}>
       <Grid item xs={12}>
-        {`${emailID}`}
+        {`${localStorage.getItem('email')}`}
       </Grid>
       <Grid item xs={12}>
         <TextField
           label="Name"
           variant="outlined"
+          //defaultValue={`${localStorage.getItem('name')}`}
           value={name}
           onChange={onChangeUsername}
         />
@@ -90,6 +83,7 @@ const Profile = (props) => {
           label="Contact Number"
           variant="outlined"
           value={contactNumber}
+          //defaultValue={`${localStorage.getItem('contactNumber')}`}
           onChange={onChangeContactNumber}
         />
       </Grid>
@@ -98,6 +92,7 @@ const Profile = (props) => {
           label="Age"
           variant="outlined"
           value={age}
+          //defaultValue= {`${localStorage.getItem('age')}`}
           onChange={onChangeAge}
         />
       </Grid>
@@ -106,6 +101,7 @@ const Profile = (props) => {
           label="Batch"
           variant="outlined"
           value={batch}
+          //defaultValue= {`${localStorage.getItem('batch')}`}
           onChange={onChangeBatch}
         />
       </Grid>
@@ -114,6 +110,7 @@ const Profile = (props) => {
           label="Password"
           variant="outlined"
           value={password}
+          //defaultValue= {`${localStorage.getItem('password')}`}
           onChange={onChangePassword}
         />
       </Grid>

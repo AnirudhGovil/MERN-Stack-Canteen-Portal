@@ -29,15 +29,17 @@ const Login = (props) => {
     const newUser = {
       email: email,
       password: password,
-      buyerFlag: 0
     };
 
     axios
       .post("http://localhost:4000/user/login", newUser)
       .then((response) => {
-        const token = response.data.token;
-        localStorage.setItem("currentUser", token);
-        console.log(localStorage["currentUser"]);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("password", response.data.password);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("contactNumber", response.data.contactNumber);
+        localStorage.setItem("age", response.data.age);
+        localStorage.setItem("batch", response.data.batch);
         alert("Login Successful");
         window.location = 'http://localhost:3000/BuyerUI';
       });

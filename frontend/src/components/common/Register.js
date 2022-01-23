@@ -37,6 +37,10 @@ const Register = (props) => {
     setPassword(event.target.value);
   };
 
+  const onChangeWallet = (event) => {
+    setWallet(event.target.value);
+  };
+
   const resetInputs = () => {
     setEmail("");
     setPassword("");
@@ -44,7 +48,7 @@ const Register = (props) => {
     setContactNumber("");
     setAge("");
     setBatch("");
-    setWallet(null);
+    setWallet(0);
   };
 
   const onSubmit = (event) => {
