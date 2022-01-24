@@ -8,40 +8,52 @@ import Switch from "@mui/material/Switch";
 const RegisterFood = (props) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [nonveg, setNonveg] = useState(false);
-  const [tags, setTags] = useState(null);
+  const [nonveg, setNonveg] = useState(Boolean(0));
+  const [tags, setTags] = useState("");
+  const [addOns, setAddOns] = useState("");
 
   const onChangeName = (event) => {
-    setPrice(event.target.value);
+    setName(event.target.value);
   };
 
   const onChangePrice = (event) => {
     setPrice(event.target.value);
   };
 
+  const onChangeTags = (event) => {
+    setTags(event.target.value);
+  };
+
   const onChangeNonveg = (event) => {
-    setNonveg(event.target.value);
+    setTags(event.target.value);
+  };
+
+  const onChangeAddOns = (event) => {
+    setAddOns(event.target.value);
   };
 
   const resetInputs = () => {
     setName("");
     setPrice("");
     setNonveg("");
-    setTags(null);
+    setTags("");
+    setAddOns("");
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
 
     const newFood = {
-      email: localStorage.getItem('email'),
-      shop: localStorage.getItem('shop'),
       name: name,
-      price: Number(price),
+      shop: localStorage.getItem('shop'),
+      price: price,
       rating: Number(0),
       nonveg: nonveg,
-      tags: "",
+      tags: [tags],
+      addOns: [addOns]
     };
+
+    console.log(newFood);
 
     axios
       .post("http://localhost:4000/user/registerFood", newFood)

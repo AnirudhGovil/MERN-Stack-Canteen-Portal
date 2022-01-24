@@ -72,11 +72,6 @@ const VendorSchema = new Schema({
 
 // Create Schema
 const FoodItemsSchema = new Schema({
-	email: {
-		type: String,
-		required: true,
-		unique: true
-	},
 	name: {
 		type: String,
 		required: true
@@ -101,7 +96,11 @@ const FoodItemsSchema = new Schema({
 		default: 0
 	},
 	tags: {
-		type: Array,
+		type: [String],
+		required: false
+	},
+	addOns: {
+		type: [Object],
 		required: false
 	}
 });

@@ -200,19 +200,19 @@ router.post("/login2", (req, res) => {
 
 
 router.post("/registerFood", (req, res) => {
-    const newUser = new FoodItems({
-        email: req.body.email,
+    const newFood = new FoodItems({
         name: req.body.name,
         shop: req.body.shop,
-        price: Number(req.body.price),
-        rating: Number(req.body.rating),
+        price: req.body.price,
+        rating: req.body.rating,
         nonveg: req.body.nonveg,
-        tag: req.body.tag
+        tags: req.body.tags,
+        addOns : req.body.addOns
     });
 
-    newUser.save()
-        .then(user => {
-            res.status(200).json(user);
+    newFood.save()
+        .then(food => {
+            res.status(200).json(food);
         })
         .catch(err => {
             res.status(400).send(err);
