@@ -16,6 +16,7 @@ import VendorUI from "./components/Vendor/VendorUI";
 import Profile from "./components/Buyer/Profile";
 import ProfileVendors from "./components/Vendor/ProfileVendors";
 import Wallet from "./components/Buyer/Wallet";
+import FoodEdit from "./components/Vendor/FoodEdit";
 
 const Layout = () => {
   return (
@@ -71,6 +72,7 @@ function App() {
           <Route path="ProfileVendors" element={<ProfileVendors />} />
           <Route path="VendorUI" element={<VendorUI />} />
           <Route path="RegisterFood" element={<RegisterFood/>} />
+          <Route path="FoodEdit" element={<FoodEdit/>} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -35,7 +35,7 @@ const VendorNavbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" onClick={() => navigate("/RegisterFood")}>
-           Add Food Item
+           Edit Canteen Menu
           </Button>
           <Button color="inherit" onClick={() => navigate("/profilevendors")}>
            My Profile

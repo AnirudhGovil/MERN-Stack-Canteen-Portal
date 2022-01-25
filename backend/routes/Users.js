@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
+var shopName;
 // Load User model
 const User = require("../models/Users").User;
 const Vendor = require("../models/Users").Vendor;
@@ -29,7 +29,7 @@ router.get("/vendors", function (req, res) {
 });
 
 router.get("/getFoodItems", function (req, res) {
-    FoodItems.find(function (err, users) {
+    FoodItems.find({ shopName },function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -81,6 +81,7 @@ router.post("/vendorprofile", (req, res) => {
         vendor.name = req.body.name;
         vendor.contactNumber = req.body.contactNumber;
         vendor.shop = req.body.shop;
+        shopName = req.body.shop;
         vendor.timings = req.body.timings;
         vendor.password = req.body.password;
         vendor.orders = req.body.orders;
@@ -92,6 +93,40 @@ router.post("/vendorprofile", (req, res) => {
         });
     })
 });
+
+router.post("/editfood", (req, res) => {
+    const name = req.body.name;
+    // Find user by email
+    FoodItems.findOne({ name }).then(foodItem => {
+        // Check if foodItem email exists
+        foodItem.price = req.body.price;
+        foodItem.nonveg = req.body.nonveg;
+        foodItem.tags = req.body.tags;
+        foodItem.addOns = req.body.addOns;
+        foodItem.save().then(foodItem => {
+            res.status(200).json(foodItem);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+});
+
+router.post("/deletefood", (req, res) => {
+    const name = req.body.name;
+    // Find user by email
+    FoodItems.findOne({ name }).then(foodItem => {
+        // Check if foodItem email exists
+        foodItem.remove().then(foodItem => {
+            res.status(200).json(foodItem);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+});
+
+
 
 
 // NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
