@@ -85,7 +85,7 @@ const UsersList = (props) => {
                   </InputAdornment>
                 ),
               }}
-              // onChange={customFunction}
+              onChange={customFunction}
             />
           </List>
         </Grid>

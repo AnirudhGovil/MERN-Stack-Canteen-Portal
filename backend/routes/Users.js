@@ -1,15 +1,16 @@
 var express = require("express");
 var router = express.Router();
 var shopName;
-// Load User model
-const User = require("../models/Users").User;
+// Load Buyer model
+const Buyer = require("../models/Users").Buyer;
 const Vendor = require("../models/Users").Vendor;
 const FoodItems = require("../models/Users").FoodItems;
+const Orders = require("../models/Users").Orders;
 
 // GET request 
 // Getting all the users
 router.get("/buyers", function (req, res) {
-    User.find(function (err, users) {
+    Buyer.find(function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -38,10 +39,31 @@ router.get("/getFoodItems", function (req, res) {
     })
 });
 
+router.get("/getOrders", function (req, res) {
+    Orders.find({ shopName },function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+router.get("/getAllFoodItems", function (req, res) {
+    FoodItems.find(function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+
 router.post("/wallet", (req, res) => {
     const email = req.body.email;
     // Find user by email
-    User.findOne({ email }).then(user => {
+    Buyer.findOne({ email }).then(user => {
         // Check if user email exists
         user.wallet = Number(user.wallet) + Number(req.body.wallet);
         user.save().then(user => {
@@ -56,7 +78,7 @@ router.post("/wallet", (req, res) => {
 router.post("/userprofile", (req, res) => {
     const email = req.body.email;
     // Find user by email
-    User.findOne({ email }).then(user => {
+    Buyer.findOne({ email }).then(user => {
         // Check if user email exists
         user.name = req.body.name;
         user.contactNumber = req.body.contactNumber;
@@ -134,7 +156,7 @@ router.post("/deletefood", (req, res) => {
 // POST request 
 // Add a user to db
 router.post("/register", (req, res) => {
-    const newUser = new User({
+    const newUser = new Buyer({
         email: req.body.email,
         password: req.body.password,
         name: req.body.name,
@@ -178,7 +200,7 @@ router.post("/register2", (req, res) => {
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
     // Find user by email
-    User.findOne({ email: email }).then(user => {
+    Buyer.findOne({ email: email }).then(user => {
         // Check if user email exists
         if (user) {
             if (password === user.password) {
@@ -253,6 +275,150 @@ router.post("/registerFood", (req, res) => {
             res.status(400).send(err);
         });
 });
+
+router.post("/registerOrder", (req, res) => {
+    const newOrder = new Orders({
+        itemName: req.body.itemName,
+        buyerEmail: req.body.buyerEmail,
+        shop: req.body.shop,
+        price: req.body.price,
+        addOns : req.body.addOns,
+        date : req.body.date,
+        quantity : req.body.quantity,
+        status : req.body.status,
+    });
+
+    newOrder.save()
+    const email = req.body.buyerEmail;
+        // Find user by email
+    Buyer.findOne({ email }).then(user => {
+            // Check if user email exists
+            user.wallet = Number(user.wallet) - Number(req.body.price);
+            user.save().then(user => {
+                res.status(200).json(user);
+            })
+            .catch(err => {
+                res.status(400).send(err);
+            });
+        })
+});
+
+router.post("/editOrder", (req, res) => {
+    const buyerEmail = req.body.buyerEmail;
+    const date = req.body.date;
+    const stat = req.body.status;
+    // Find user by email and date
+    Orders.findOne({buyerEmail: buyerEmail,date: date}).then(Orders => {
+        // Check if Orders email exists
+        if(stat.localeCompare("REJECTED")==0)
+        {
+            Orders.status="REJECTED";
+        }
+        else if(Orders.status.localeCompare("PLACED")==0)
+        {
+            Orders.status="ACCEPETD";
+        }
+        else if(Orders.status.localeCompare("ACCEPETD")==0)
+        {
+            Orders.status="COOKING";
+        }
+        else if(Orders.status.localeCompare("COOKING")==0)
+        {
+            Orders.status="READY FOR PICKUP";
+        }
+        else if(Orders.localeCompare("REJECTED")==0)
+        {
+            Orders.status="REJECTED";
+        }
+        Orders.save().then(Orders => {
+            res.status(200).json(Orders);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+});
+
+router.post("/pickOrder", (req, res) => {
+    const buyerEmail = req.body.buyerEmail;
+    const date = req.body.date;
+    // Find user by email and date
+    Orders.findOne({buyerEmail: buyerEmail,date: date}).then(Orders => {
+        // Check if Orders email exists
+        if(Orders.status.localeCompare("READY FOR PICKUP")==0)
+        {
+            Orders.status="COMPLETED";
+        }
+        Orders.save().then(Orders => {
+            res.status(200).json(Orders);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+});
+
+router.post("/completedOrders", (req, res) => {
+    const shop = req.body.shop;
+    const status = "COMPLETED";
+    // Find user by email and date
+    Orders.find({shop: shop,status: status}).then(Orders => {
+            res.status(200).json(Orders);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+
+    router.post("/cookingOrders", (req, res) => {
+        const shop = req.body.shop;
+        const status = "COOKING";
+        // Find user by email and date
+        Orders.find({shop: shop,status: status}).then(Orders => {
+                res.status(200).json(Orders);
+            })
+            .catch(err => {
+                res.status(400).send(err);
+            });
+        })
+
+    router.post("/currentlyPlacedOrders", (req, res) => {
+            const shop = req.body.shop;
+            const status = "PLACED";
+            // Find user by email and date
+            Orders.find({shop: shop,status: status}).then(Orders => {
+                    res.status(200).json(Orders);
+                })
+                .catch(err => {
+                    res.status(400).send(err);
+                });
+            })
+
+    router.post("/toBePickedUpOrders", (req, res) => {
+        const shop = req.body.shop;
+        const status = "READY FOR PICKUP";
+        // Find user by email and date
+        Orders.find({shop: shop,status: status}).then(Orders => {
+                res.status(200).json(Orders);
+            })
+            .catch(err => {
+                res.status(400).send(err);
+            });
+        })
+
+    router.post("/totalOrders", (req, res) => {
+            const shop = req.body.shop;
+            // Find user by email and date
+            Orders.find({shop}).then(Orders => {
+                    res.status(200).json(Orders);
+                })
+                .catch(err => {
+                    res.status(400).send(err);
+                });
+            })
+
+
+
 
 module.exports = router;
 

@@ -34,6 +34,12 @@ const VendorNavbar = () => {
             Vendor Portal
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit" onClick={() => navigate("/Statistics")}>
+           Statistics
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/Orders")}>
+           Orders
+          </Button>
           <Button color="inherit" onClick={() => navigate("/RegisterFood")}>
            Edit Canteen Menu
           </Button>

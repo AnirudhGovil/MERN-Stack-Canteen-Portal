@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-const UserSchema = new Schema({
+const BuyerSchema = new Schema({
 	email: {
 		type: String,
 		required: true,
@@ -105,9 +105,46 @@ const FoodItemsSchema = new Schema({
 	}
 });
 
+// Create Schema
+const OrdersSchema = new Schema({
+	itemName: {
+		type: String,
+		required: true
+	},
+	buyerEmail: {
+		type: String,
+		required: true
+	},
+	shop: {
+		type: String,
+		required: true
+	},
+	price: {
+		type: Number,
+		required: true,
+		default: 0
+	},
+	addOns: {
+		type: [Object],
+		required: false
+	},
+	date:{
+		type: Date,
+		required: true
+	},
+	quantity:{
+		type: Number,
+		required: true
+	},
+	status:{
+		type: String,
+		required: true
+	},
+});
 
 module.exports = {
-	User: mongoose.model("Users", UserSchema),
+	Buyer: mongoose.model("Buyers", BuyerSchema),
 	Vendor: mongoose.model("Vendors", VendorSchema),
-	FoodItems: mongoose.model("FoodItems", FoodItemsSchema)
+	FoodItems: mongoose.model("FoodItems", FoodItemsSchema),
+	Orders: mongoose.model("Orders", OrdersSchema)
 };
