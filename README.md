@@ -1,4 +1,4 @@
-# MERN Stack Boilerplate
+# Canteen Portal using MERN Stack 
 
 ## Installations
 
