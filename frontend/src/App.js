@@ -6,7 +6,7 @@ import Home from "./components/common/Home";
 import Register from "./components/Buyer/Register";
 import Register2 from "./components/Vendor/Register2";
 import RegisterFood from "./components/Vendor/RegisterFood";
-import Login from "./components/Buyer/Login";
+import Login from "./components/common/Login";
 import Navbar from "./components/common/Navbar";
 import BuyerNavbar from "./components/Buyer/BuyerNavbar";
 import VendorNavbar from "./components/Vendor/VendorNavbar";
