@@ -308,36 +308,14 @@ const Menu = (props) => {
                                     </TableCell>
                                     <TableCell> 
                                         Rating
+                                        <Button onClick = {sortChangeRating} > { sortRating ? < ArrowDownwardIcon/> : < ArrowUpwardIcon/> }</Button>
                                     </TableCell>
                                     <TableCell>
                                         Quantity
                                     </TableCell>
                                     <TableCell>
                                         Availability
-                                    </TableCell>
-                                </TableRow >
-                                <TableRow >
-                                    <TableCell >
-                                    </TableCell>
-                                    <TableCell>
-                                    </TableCell>
-                                    <TableCell> 
-                                    </TableCell>
-                                    <TableCell>
-                                    </TableCell>
-                                    <TableCell >
-                                    </TableCell>
-                                    <TableCell>
-                                    </TableCell>
-                                    <TableCell>
-                                    </TableCell>
-                                    <TableCell> 
-                                        <Button onClick = {sortChangeRating} > { sortRating ? < ArrowDownwardIcon/> : < ArrowUpwardIcon/> }</Button>
-                                    </TableCell>
-                                    <TableCell>
-                                    </TableCell>
-                                    <TableCell>
-                                    <Button onClick = {sortChangeAvailable} > { sortAvailable ? < ArrowDownwardIcon/> : < ArrowUpwardIcon/> }</Button>
+                                        <Button onClick = {sortChangeAvailable} > { sortAvailable ? < ArrowDownwardIcon/> : < ArrowUpwardIcon/> }</Button>
                                     </TableCell>
                                 </TableRow >
                             </TableHead>

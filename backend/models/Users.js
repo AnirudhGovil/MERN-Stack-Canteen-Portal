@@ -150,5 +150,5 @@ module.exports = {
 	Buyer: mongoose.model("Buyers", BuyerSchema),
 	Vendor: mongoose.model("Vendors", VendorSchema),
 	FoodItems: mongoose.model("FoodItems", FoodItemsSchema),
-	Orders: mongoose.model("Orders", OrdersSchema)
+	Orders: mongoose.model("Orders", OrdersSchema),
 };
