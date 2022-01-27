@@ -11,7 +11,8 @@ const ProfileVendors = (props) => {
   const [password, setPassword] = useState(localStorage.getItem('password'));
   const [contactNumber, setContactNumber] = useState(localStorage.getItem('contactNumber'));
   const [shop, setShop] = useState(localStorage.getItem('shop'));
-  const [timings, setTimings] = useState(localStorage.getItem('timings'));
+  const [timings1, setTimings1] = useState(localStorage.getItem('timings1'));
+  const [timings2, setTimings2] = useState(localStorage.getItem('timings2'));
 
   const onChangeUsername = (event) => {
     setName(event.target.value);
@@ -25,8 +26,12 @@ const ProfileVendors = (props) => {
     setShop(event.target.value);
   };
 
-  const onChangeTimings = (event) => {
-    setTimings(event.target.value);
+  const onChangeTimings1 = (event) => {
+    setTimings1(event.target.value);
+  };
+
+  const onChangeTimings2 = (event) => {
+    setTimings2(event.target.value);
   };
 
   const onChangePassword = (event) => {
@@ -43,7 +48,8 @@ const ProfileVendors = (props) => {
       name: name,
       contactNumber: contactNumber,
       shop: shop,
-      timings: timings,
+      timings1: timings1,
+      timings2: timings2,
       orders: localStorage.getItem('orders')
     };
 
@@ -55,7 +61,8 @@ const ProfileVendors = (props) => {
         localStorage.setItem("name", response.data.name);
         localStorage.setItem("contactNumber", response.data.contactNumber);
         localStorage.setItem("shop", response.data.shop);
-        localStorage.setItem("timings", response.data.timings);
+        localStorage.setItem("timings1", response.data.timings1);
+        localStorage.setItem("timings2", response.data.timings2);
         console.log(response.data);
         window.location = 'http://localhost:3000/profilevendors';
       });
@@ -87,11 +94,20 @@ const ProfileVendors = (props) => {
       </Grid>
       <Grid item xs={12}>
         <TextField
-          label="Timings"
+          label="Opening Timing"
           variant="outlined"
-          value={timings}
+          value={timings1}
           //defaultValue= {`${localStorage.getItem('timings')}`}
-          onChange={onChangeTimings}
+          onChange={onChangeTimings1}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          label="Closing Timing"
+          variant="outlined"
+          value={timings2}
+          //defaultValue= {`${localStorage.getItem('timings')}`}
+          onChange={onChangeTimings2}
         />
       </Grid>
       <Grid item xs={12}>

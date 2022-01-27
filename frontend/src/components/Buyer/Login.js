@@ -3,7 +3,10 @@ import axios from "axios";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+var type = 0;
 
 const Login = (props) => {
 
@@ -23,7 +26,7 @@ const Login = (props) => {
     setPassword("");
   };
 
-  const onSubmit = (event) => {
+  const onSubmit1 = (event) => {
     event.preventDefault();
 
     const newUser = {
@@ -49,8 +52,48 @@ const Login = (props) => {
     resetInputs();
   };
 
+  const onSubmit2 = (event) => {
+    event.preventDefault();
+
+    const newUser = {
+      email: email,
+      password: password,
+    };
+
+    axios
+      .post("http://localhost:4000/user/login2", newUser)
+      .then((response) => {
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("password", response.data.password);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("contactNumber", response.data.contactNumber);
+        localStorage.setItem("shop", response.data.shop);
+        localStorage.setItem("timings1", response.data.timings1);
+        localStorage.setItem("timings2", response.data.timings2);
+        localStorage.setItem("orders", 0);
+        localStorage.setItem("Top5",['none','none','none','none','none']);
+        alert("Login Successful");
+        window.location = 'http://localhost:3000/VendorUI';
+      });
+
+
+    resetInputs();
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Grid container align={"center"} spacing={2}>
+      <Grid>
+<br></br><br></br><br></br><br></br>
+      </Grid>
       <Grid item xs={12}>
         <TextField
           label="Email"
@@ -69,9 +112,31 @@ const Login = (props) => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button variant="contained" onClick={onSubmit}>
-          Buyer Login
-        </Button>
+      <Grid item xs={12}>
+      <Button
+            id="basic-button"
+            color="inherit"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
+            LOGIN
+      </Button>
+      <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={onSubmit1}>Buyer</MenuItem>
+            <MenuItem onClick={onSubmit2}>Vendor</MenuItem>
+          </Menu>
+      </Grid>
       </Grid>
     </Grid>
   );

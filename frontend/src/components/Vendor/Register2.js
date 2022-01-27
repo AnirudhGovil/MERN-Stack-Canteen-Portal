@@ -10,7 +10,8 @@ const Register2 = (props) => {
   const [password, setPassword] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [shop, setShop] = useState("");
-  const [timings, setTimings] = useState("");
+  const [timings1, setTimings1] = useState(0);
+  const [timings2, setTimings2] = useState(0);
   const [orders, setOrders] = useState(null);
 
   const onChangeUsername = (event) => {
@@ -29,8 +30,12 @@ const Register2 = (props) => {
     setShop(event.target.value);
   };
 
-  const onChangeTimings = (event) => {
-    setTimings(event.target.value);
+  const onChangeTimings1 = (event) => {
+    setTimings1(event.target.value);
+  };
+
+  const onChangeTimings2 = (event) => {
+    setTimings2(event.target.value);
   };
 
   const onChangePassword = (event) => {
@@ -43,7 +48,8 @@ const Register2 = (props) => {
     setName("");
     setContactNumber("");
     setShop("");
-    setTimings("");
+    setTimings1(0);
+    setTimings2(0);
     setOrders(0);
   };
 
@@ -56,7 +62,8 @@ const Register2 = (props) => {
       name: name,
       contactNumber: contactNumber,
       shop: shop,
-      timings: timings,
+      timings1: timings1,
+      timings2: timings2,
       setOrders: 0,
     };
 
@@ -106,10 +113,18 @@ const Register2 = (props) => {
       </Grid>
       <Grid item xs={12}>
         <TextField
-          label="Timings"
+          label="Opening Timings"
           variant="outlined"
-          value={timings}
-          onChange={onChangeTimings}
+          value={timings1}
+          onChange={onChangeTimings1}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          label="Closing Timings"
+          variant="outlined"
+          value={timings2}
+          onChange={onChangeTimings2}
         />
       </Grid>
       <Grid item xs={12}>

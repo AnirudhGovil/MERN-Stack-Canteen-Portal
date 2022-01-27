@@ -26,10 +26,15 @@ const Orders = (props) => {
     const [sortedUsers, setSortedUsers] = useState([]);
     const [sortName, setSortName] = useState(true);
     const [searchText, setSearchText] = useState("");
+    const [orders, setOrders] = useState([]);
     useEffect(
         () => {
             axios
-                .get("http://localhost:4000/user/getOrders")
+                .get("http://localhost:4000/user/getOrders",{
+                    headers: {
+                        'shop':localStorage.getItem('shop')
+                    }
+                })
                 .then((response) => {
                     setUsers(response.data);
                     setSortedUsers(response.data);
@@ -38,7 +43,27 @@ const Orders = (props) => {
                 .catch((error) => {
                     console.log(error);
                 });
-        }, []);
+
+            const shopID = {
+                shop: localStorage.getItem('shop')
+                };
+            
+            axios
+                .post("http://localhost:4000/user/cookingOrders", shopID)
+                .then((response) => {
+                  //console.log(response.data);
+                  localStorage.setItem("cookingOrders",response.data.length);
+                  
+                });
+
+            axios
+                .post("http://localhost:4000/user/acceptedOrders", shopID)
+                .then((response) => {
+                  //console.log(response.data);
+                  localStorage.setItem("acceptedOrders",response.data.length);
+                }); 
+              
+        }, [users]);
 
     const sortChange = () => {
         let usersTemp = users;
@@ -55,10 +80,13 @@ const Orders = (props) => {
     };
 
     const editFunction = (event) => {
+
+        if(localStorage.getItem('cookingOrders')+localStorage.getItem('acceptedOrders')<=10)
+        {
         const newOrder = {
             buyerEmail: event.buyerEmail,
             date : event.date,
-            status : event.status
+            status : event.status,  
         };
 
         axios
@@ -68,7 +96,11 @@ const Orders = (props) => {
                 console.log(response.data);
                 window.location=('http://localhost:3000/Orders')
             });
-        
+        }
+        else
+        {
+            alert("Too many orders");
+        }
         
     };
 
@@ -76,7 +108,8 @@ const Orders = (props) => {
       const newOrder = {
           buyerEmail: event.buyerEmail,
           date : event.date,
-          status : "REJECTED"
+          status : "REJECTED",
+          price : event.price
       };
 
       axios

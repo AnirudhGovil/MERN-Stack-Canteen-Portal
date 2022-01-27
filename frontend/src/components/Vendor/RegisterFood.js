@@ -30,7 +30,11 @@ const RegisterFood = (props) => {
     useEffect(
         () => {
             axios
-                .get("http://localhost:4000/user/getFoodItems")
+                .get("http://localhost:4000/user/getFoodItems", {
+                    headers: {
+                        'shop':localStorage.getItem('shop')
+                    }
+                })
                 .then((response) => {
                     setUsers(response.data);
                     setSortedUsers(response.data);
@@ -97,10 +101,10 @@ const RegisterFood = (props) => {
             name: name,
             shop: localStorage.getItem('shop'),
             price: price,
-            rating: Number(0),
+            rating: [],
             nonveg: nonveg,
             tags: [tags],
-            addOns: [addOns]
+            addOns: [addOns],
         };
 
         console.log(newFood);

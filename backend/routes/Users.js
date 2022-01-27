@@ -30,7 +30,8 @@ router.get("/vendors", function (req, res) {
 });
 
 router.get("/getFoodItems", function (req, res) {
-    FoodItems.find({ shopName },function (err, users) {
+    const shop = req.headers.shop;
+    FoodItems.find({shop},function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -40,7 +41,20 @@ router.get("/getFoodItems", function (req, res) {
 });
 
 router.get("/getOrders", function (req, res) {
-    Orders.find({ shopName },function (err, users) {
+    const shop = req.headers.shop;
+    Orders.find({shop},function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+router.get("/getMyOrders", function (req, res) {
+    const Email = req.headers.buyeremail;
+    console.log(req)
+    Orders.find({buyerEmail : Email},function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -50,6 +64,7 @@ router.get("/getOrders", function (req, res) {
 });
 
 router.get("/getAllFoodItems", function (req, res) {
+    var curr_date = new Date();
     FoodItems.find(function (err, users) {
         if (err) {
             console.log(err);
@@ -58,7 +73,6 @@ router.get("/getAllFoodItems", function (req, res) {
         }
     })
 });
-
 
 router.post("/wallet", (req, res) => {
     const email = req.body.email;
@@ -103,8 +117,8 @@ router.post("/vendorprofile", (req, res) => {
         vendor.name = req.body.name;
         vendor.contactNumber = req.body.contactNumber;
         vendor.shop = req.body.shop;
-        shopName = req.body.shop;
-        vendor.timings = req.body.timings;
+        vendor.timings1 = req.body.timings1;
+        vendor.timings2 = req.body.timings2;
         vendor.password = req.body.password;
         vendor.orders = req.body.orders;
         vendor.save().then(vendor => {
@@ -182,7 +196,8 @@ router.post("/register2", (req, res) => {
         name: req.body.name,
         contactNumber: req.body.contactNumber,
         shop: req.body.shop,
-        timings: req.body.timings,
+        timings1: req.body.timings1,
+        timings2: req.body.timings2,
         orders: req.body.orders
     });
 
@@ -240,7 +255,8 @@ router.post("/login2", (req, res) => {
                     'name': vendor.name,
                     'contactNumber': vendor.contactNumber,
                     'shop': vendor.shop,
-                    'timings': vendor.timings
+                    'timings1': vendor.timings1,
+                    'timings2': vendor.timings2
                 });
                 res.send({ message: "login sucess", vendor: vendor })
                 res.redirect('/')
@@ -264,7 +280,7 @@ router.post("/registerFood", (req, res) => {
         rating: req.body.rating,
         nonveg: req.body.nonveg,
         tags: req.body.tags,
-        addOns : req.body.addOns
+        addOns : req.body.addOns,
     });
 
     newFood.save()
@@ -293,7 +309,7 @@ router.post("/registerOrder", (req, res) => {
         // Find user by email
     Buyer.findOne({ email }).then(user => {
             // Check if user email exists
-            user.wallet = Number(user.wallet) - Number(req.body.price);
+            user.wallet = Number(user.wallet) - req.body.quantity*Number(req.body.price);
             user.save().then(user => {
                 res.status(200).json(user);
             })
@@ -313,12 +329,17 @@ router.post("/editOrder", (req, res) => {
         if(stat.localeCompare("REJECTED")==0)
         {
             Orders.status="REJECTED";
+            Buyer.findOne({ email : buyerEmail }).then(user => {
+                // Check if user email exists
+                user.wallet = Number(user.wallet) + Number(req.body.price);
+                user.save()
+            })
         }
         else if(Orders.status.localeCompare("PLACED")==0)
         {
-            Orders.status="ACCEPETD";
+            Orders.status="ACCEPTED";
         }
-        else if(Orders.status.localeCompare("ACCEPETD")==0)
+        else if(Orders.status.localeCompare("ACCEPTED")==0)
         {
             Orders.status="COOKING";
         }
@@ -358,6 +379,21 @@ router.post("/pickOrder", (req, res) => {
     })
 });
 
+router.post("/rateOrder", (req, res) => {
+    const foodItem = req.body.foodItem;
+    // Find user by email and date
+    FoodItems.findOne({name: foodItem}).then(food => {
+        // Check if food email exists
+        food.rating.push(req.body.rating)
+        food.save().then(food => {
+            res.status(200).json(food);
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+    })
+});
+
 router.post("/completedOrders", (req, res) => {
     const shop = req.body.shop;
     const status = "COMPLETED";
@@ -370,7 +406,7 @@ router.post("/completedOrders", (req, res) => {
         });
     })
 
-    router.post("/cookingOrders", (req, res) => {
+router.post("/cookingOrders", (req, res) => {
         const shop = req.body.shop;
         const status = "COOKING";
         // Find user by email and date
@@ -381,6 +417,18 @@ router.post("/completedOrders", (req, res) => {
                 res.status(400).send(err);
             });
         })
+
+router.post("/acceptedOrders", (req, res) => {
+        const shop = req.body.shop;
+        const status = "ACCEPTED";
+            // Find user by email and date
+        Orders.find({shop: shop,status: status}).then(Orders => {
+                  res.status(200).json(Orders);
+               })
+              .catch(err => {
+                res.status(400).send(err);
+            });
+       })
 
     router.post("/currentlyPlacedOrders", (req, res) => {
             const shop = req.body.shop;

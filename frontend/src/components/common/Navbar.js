@@ -72,25 +72,10 @@ const Navbar = () => {
           <Button
             id="basic-button-2"
             color="inherit"
-            aria-controls={open2 ? 'basic-menu-2' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open2 ? 'true' : undefined}
-            onClick={handleClick2}
+            onClick={() => navigate("/login")}
           >
             Login
           </Button>
-          <Menu
-            id="basic-menu-2"
-            anchorEl={anchorEl2}
-            open={open2}
-            onClose={handleClose2}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button-2',
-            }}
-          >
-            <MenuItem onClick={() => navigate("/login")}>Buyer Login</MenuItem>
-            <MenuItem onClick={() => navigate("/login2")}>Vendor Login</MenuItem>
-          </Menu>
         </Toolbar>
       </AppBar>
     </Box>

@@ -15,25 +15,33 @@ import Divider from "@mui/material/Divider";
 import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import Rating from "@mui/material/Rating";
 
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Switch from "@mui/material/Switch";
 
-const Orders = (props) => {
+const MyOrders = (props) => {
   const [users, setUsers] = useState([]);
     const [sortedUsers, setSortedUsers] = useState([]);
     const [sortName, setSortName] = useState(true);
     const [searchText, setSearchText] = useState("");
+    const [newValue, setValue] = useState(0);
+    
     useEffect(
         () => {
             axios
-                .get("http://localhost:4000/user/getOrders")
+                .get("http://localhost:4000/user/getMyOrders",{
+                    headers: {
+                        'buyeremail':localStorage.getItem('email')
+                    }
+                })
                 .then((response) => {
                     setUsers(response.data);
                     setSortedUsers(response.data);
                     setSearchText("");
+                    console.log(JSON.stringify(response.data))
                 })
                 .catch((error) => {
                     console.log(error);
@@ -72,12 +80,29 @@ const Orders = (props) => {
         
     };
 
+    const rateFunction = (event) => {
+        const rateOrder = {
+            foodItem : event.foodItem,
+            rating : event.rating
+        };
+        console.log(rateOrder)
+
+        axios
+            .post("http://localhost:4000/user/rateOrder", rateOrder)
+            .then((response) => {
+                console.log(response.data);
+                window.location=('http://localhost:3000/MyOrders')
+            });
+        
+        
+    };
+
 
     return ( 
         <div>
         <Grid container align = { "center" } >
         <Grid item xs = { 12 } align = { "center" } >
-        Orders for {`${localStorage.getItem('shop')}`}
+        Orders for {`${localStorage.getItem('name')}`}
         </Grid> 
         <Grid><br></br></Grid>
         <Grid><br></br></Grid>
@@ -114,6 +139,14 @@ const Orders = (props) => {
         <TableCell> 
         Status        
         </TableCell> 
+        <TableCell> 
+     
+        </TableCell>
+        <TableCell> 
+     
+        </TableCell>
+        <TableCell> 
+        </TableCell>
         </TableRow > 
         </TableHead> 
         <TableBody > 
@@ -128,10 +161,24 @@ const Orders = (props) => {
                 <TableCell > { order.quantity } </TableCell> 
                 <TableCell > { order.status} </TableCell> 
                 <TableCell>
-                <Button  disabled={order.status.localeCompare("READY FOR PICKUP")} onClick = {() => editFunction(order)} >
+                <Button  disabled={order.status.localeCompare("READY FOR PICKUP")} onClick = {() => editFunction(order)}  >
                 PICK UP
                 </Button> 
                 </TableCell > 
+                <TableCell>
+                <Rating
+                disabled={order.status.localeCompare("COMPLETED")}
+                name="simple-controlled"
+                onChange={(event, newValue) => {
+                    setValue(newValue);
+                    console.log(newValue);
+                }
+                } 
+                />
+                </TableCell > 
+                <Button id="bt" disabled={order.status.localeCompare("COMPLETED")} onClick = {() => rateFunction({foodItem : order.itemName, rating : newValue})} >
+                RATE
+                </Button>
                 </TableRow>
             ))}
         </TableBody> 
@@ -143,4 +190,4 @@ const Orders = (props) => {
     );
 };
 
-export default Orders;
+export default MyOrders;

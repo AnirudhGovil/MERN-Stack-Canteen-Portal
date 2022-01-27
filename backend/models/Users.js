@@ -59,8 +59,12 @@ const VendorSchema = new Schema({
 		type: String,
 		required: true
 	},
-	timings: {
-		type: String,
+	timings1: {
+		type: Number,
+		required: true
+	},
+	timings2: {
+		type: Number,
 		required: true
 	},
 	orders: {
@@ -86,7 +90,7 @@ const FoodItemsSchema = new Schema({
 		default: 0
 	},
 	rating: {
-		type: Number,
+		type: [Number],
 		required: false,
 		default: 0
 	},
@@ -102,7 +106,7 @@ const FoodItemsSchema = new Schema({
 	addOns: {
 		type: [Object],
 		required: false
-	}
+	},
 });
 
 // Create Schema
