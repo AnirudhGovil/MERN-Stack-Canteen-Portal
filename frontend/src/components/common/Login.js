@@ -6,6 +6,15 @@ import Button from "@mui/material/Button";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import IconButton from '@mui/material/IconButton';
+
 var type = 0;
 
 const Login = (props) => {
@@ -81,6 +90,7 @@ const Login = (props) => {
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [values, setValues] = useState(false)
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -89,13 +99,17 @@ const Login = (props) => {
     setAnchorEl(null);
   };
 
+  const handleClickShowPassword = () => {
+    setValues(!values);
+  };
+
   return (
     <Grid container align={"center"} spacing={2}>
       <Grid>
 <br></br><br></br><br></br><br></br>
       </Grid>
       <Grid item xs={12}>
-        <TextField
+        <TextField sx={{ m: 1, width: '25ch' }}
           label="Email"
           variant="outlined"
           value={email}
@@ -103,12 +117,27 @@ const Login = (props) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          label="Password"
-          variant="outlined"
-          value={password}
-          onChange={onChangePassword}
-        />
+      <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={values ? 'text' : 'password'}
+            value={password}
+            onChange={onChangePassword}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {values ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
       </Grid>
 
       <Grid item xs={12}>
