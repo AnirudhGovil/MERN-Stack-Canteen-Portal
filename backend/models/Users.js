@@ -104,16 +104,7 @@ const FoodItemsSchema = new Schema({
 		required: false
 	},
 	addOns: {
-		type: [
-				{
-					name :{
-						type: String
-				},	
-					price :{
-						type: Number
-				}
-				}	
-			],
+		type: [Object],
 		required: false
 	},
 });
