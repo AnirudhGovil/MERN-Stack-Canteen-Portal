@@ -196,7 +196,7 @@ const Menu = (props) => {
 
     const orderFunction = (event) => {
 
-        if (localStorage.getItem('wallet') >= event.price) {
+        if (localStorage.getItem('wallet') >= event.price*event.quantity) {
             const newOrder = {
                 itemName: event.name,
                 buyerEmail: localStorage.getItem('email'),

@@ -2,9 +2,20 @@ import axios from "axios";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import { useState, useEffect } from "react";
 
 const Profile = (props) => {
+
+
+  const handleChange = (event) => {
+    setBatch(event.target.value);
+  };
+
 
   const [name, setName] = useState(localStorage.getItem('name'));
   const [password, setPassword] = useState(localStorage.getItem('password'));
@@ -94,13 +105,24 @@ const Profile = (props) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          label="Batch"
-          variant="outlined"
+      <Box sx={{ maxWidth: 246 }}>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Batch</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
           value={batch}
-          //defaultValue= {`${localStorage.getItem('batch')}`}
+          label="Batch"
           onChange={onChangeBatch}
-        />
+        >
+          <MenuItem value={"UG1"}>UG1</MenuItem>
+          <MenuItem value={"UG2"}>UG2</MenuItem>
+          <MenuItem value={"UG3"}>UG3</MenuItem>
+          <MenuItem value={"UG4"}>UG4</MenuItem>
+          <MenuItem value={"UG5"}>UG5</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
       </Grid>
       <Grid item xs={12}>
         <TextField

@@ -16,7 +16,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Rating from "@mui/material/Rating";
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -28,6 +32,14 @@ const MyOrders = (props) => {
     const [sortName, setSortName] = useState(true);
     const [searchText, setSearchText] = useState("");
     const [newValue, setValue] = useState(0);
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+    setOpen(true);
+    };
+
+    const handleClose = () => {
+    setOpen(false);
+    };
     
     useEffect(
         () => {
@@ -74,10 +86,8 @@ const MyOrders = (props) => {
             .then((response) => {
                 alert(response.data.itemName + "\tPicked Up");
                 console.log(response.data);
-                window.location=('http://localhost:3000/MyOrders')
             });
-        
-        
+            handleClickOpen();
     };
 
     const rateFunction = (event) => {
@@ -165,9 +175,11 @@ const MyOrders = (props) => {
                 PICK UP
                 </Button> 
                 </TableCell > 
-                <TableCell>
-                <Rating
-                disabled={order.status.localeCompare("COMPLETED")}
+                
+                <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>RATE</DialogTitle>
+        <DialogActions>
+        <Rating
                 name="simple-controlled"
                 onChange={(event, newValue) => {
                     setValue(newValue);
@@ -175,10 +187,10 @@ const MyOrders = (props) => {
                 }
                 } 
                 />
-                </TableCell > 
-                <Button id="bt" disabled={order.status.localeCompare("COMPLETED")} onClick = {() => rateFunction({foodItem : order.itemName, rating : newValue})} >
-                RATE
-                </Button>
+        <Button id="bt" onClick = {() => rateFunction({foodItem : order.itemName, rating : newValue})} >
+                SUBMIT</Button>
+        </DialogActions>
+      </Dialog>
                 </TableRow>
             ))}
         </TableBody> 

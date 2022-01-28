@@ -59,7 +59,7 @@ const FoodEdit = (props) => {
             price: price,
             rating: Number(0),
             nonveg: nonveg,
-            tags: tags.split(","),
+            tags: tags.split(",").map(function(item){return item.trim()}),
             addOns: [addOns]
         };
 
