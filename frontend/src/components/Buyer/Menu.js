@@ -22,6 +22,12 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Checkbox from "@mui/material/Checkbox";
 import Switch from "@mui/material/Switch";
 import Fuse from 'fuse.js';
+import InputLabel from "@mui/material/InputLabel";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 
 const Menu = (props) => {
@@ -40,6 +46,7 @@ const Menu = (props) => {
     const [query, setQuery] = useState('');
     const [minprice, setMinprice] = useState(0);
     const [maxprice, setMaxprice] = useState(0);
+    const [selected, setSelected] = useState([]);
 
     const onChangeMinprice = (event) => {
         setMinprice(event.target.value);
@@ -56,6 +63,34 @@ const Menu = (props) => {
         setQuantity(0);
     };
 
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setSelected(value);
+      };
+    
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+
+    const MenuProps = {
+        PaperProps: {
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250
+          }
+        },
+        getContentAnchorEl: null,
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "center"
+        },
+        transformOrigin: {
+          vertical: "top",
+          horizontal: "center"
+        },
+        variant: "menu"
+      };
+
+    
     useEffect(
         () => {
             axios
@@ -77,24 +112,65 @@ const Menu = (props) => {
                 .catch((error) => {
                     console.log(error);
                 });
-
         }, []);
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+          }
 
     useEffect(
         () => {
-            let filteredItems = [];
+            let filteredItems=[];
+            if(!selected)
+            {
             users.forEach(user => 
                 {
                     if(minprice && maxprice)
                     {
                         if(user.price>minprice && user.price<maxprice)
-                            filteredItems.push(user)
+                            {
+                                
+                                    filteredItems.push(user)
+                            }
+                                            
+                                        
                     }
                     else
-                        filteredItems.push(user)
-            })
+                    {
+                        
+                                filteredItems.push(user)
+                              
+                    }
+            });}
+
+            else{
+            let checker = (arr, target) => target.every(v => arr.includes(v));
+            users.forEach(user => 
+                {
+                    if(minprice && maxprice)
+                    {
+                        if(user.price>minprice && user.price<maxprice)
+                            {
+                                if(checker(user.tags,selected))
+                                {
+                                    if (!filteredItems.includes(user)) {
+                                        filteredItems.push(user)
+                                        }      
+                                }
+                        }
+                    }
+                    else
+                    {
+                        if(checker(user.tags,selected))
+                                {
+                                    if (!filteredItems.includes(user)) {
+                                        filteredItems.push(user)
+                                        }
+                                }
+                    }
+            })}
             
-            const options = {
+            const searchoptions = {
                 isCaseSensitive: false,
                 threshold: 0.4,
                 keys: ["name"]
@@ -103,7 +179,7 @@ const Menu = (props) => {
             
             if (query !== "")
             {
-                const fuse = new Fuse(filtered, options);
+                const fuse = new Fuse(filtered, searchoptions);
                 let temp = fuse.search(query);
 
                 let arr = []
@@ -113,11 +189,10 @@ const Menu = (props) => {
 
                 filteredItems = arr
             }
-
-
             
             setFiltered(filteredItems);
-        }, [query, minprice, maxprice]);
+
+        }, [query, minprice, maxprice, selected]);
 
     const orderFunction = (event) => {
 
@@ -232,7 +307,12 @@ const Menu = (props) => {
 
 
 
-    
+    function tagsFunc(vara)
+    {
+        var thing =  [... new Set(vara.flatMap( (item) => { return item.tags }))];
+        console.log(thing)
+        return thing
+    }
 
     return (
         <div>
@@ -269,13 +349,36 @@ const Menu = (props) => {
                       onChange={onChangeMaxprice}
                     />
                     </Grid>
-                    <Grid item xs={2} align={"right"}>
+                    <Grid item xs={1.5} align={"right"}>
                         Non-Veg
                     <Checkbox
                         checked={!sortNonVeg}
                         onChange={sortChangeNonVeg}
                         inputProps={{ 'aria-label': 'controlled' }}
                     />
+                    </Grid>
+                    <Grid item xs={1} align={"right"}>
+                    <FormControl>
+      <InputLabel id="Tags">Tags</InputLabel>
+      <Select
+        labelId="Tags"
+        multiple
+        value={selected}
+        onChange={handleChange}
+        renderValue={(selected) => selected.join(", ")}
+        MenuProps={MenuProps}
+      >
+        {tagsFunc(users).map((option) => (
+          <MenuItem key={option} value={option}>
+            <ListItemIcon>
+              <Checkbox checked={selected.indexOf(option) > -1} />
+            </ListItemIcon>
+            <ListItemText primary={option} />
+            {console.log(selected)}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -328,7 +431,7 @@ const Menu = (props) => {
                                             <TableCell > {food.price} </TableCell>
                                             <TableCell > {food.shop} </TableCell>
                                             <TableCell > {veg(food.nonveg)} </TableCell>
-                                            <TableCell > {food.tags} </TableCell>
+                                            <TableCell > {food.tags.toString()} </TableCell>
                                             <TableCell > {food.addOns} </TableCell>
                                             <TableCell >
                                                 <Rating value={(food.rating.reduce(function (a, b) { return a + b; }, 0)) / food.rating.length} readOnly precision={0.1} />
@@ -359,3 +462,7 @@ const Menu = (props) => {
 };
 
 export default Menu;
+
+/*
+ 
+*/

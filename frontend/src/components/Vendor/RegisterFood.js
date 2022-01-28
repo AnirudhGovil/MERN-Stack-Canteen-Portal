@@ -103,7 +103,7 @@ const RegisterFood = (props) => {
             price: price,
             rating: [],
             nonveg: nonveg,
-            tags: [tags],
+            tags: tags.split(",").map(function(item){return item.trim()}),
             addOns: [addOns],
         };
 
@@ -146,6 +146,7 @@ const RegisterFood = (props) => {
         
         
     };
+
 
 
     return ( 
@@ -223,7 +224,7 @@ const RegisterFood = (props) => {
                 <TableCell > { food.price } </TableCell> 
                 <TableCell > { food.shop } </TableCell> 
                 <TableCell > { food.nonveg.toString() } </TableCell> 
-                <TableCell > { food.tags } </TableCell> 
+                <TableCell > { food.tags.toString() } </TableCell> 
                 <TableCell > { food.addOns } </TableCell> 
                 <TableCell >
                 <Button onClick = {() => editFunction(food)} >
